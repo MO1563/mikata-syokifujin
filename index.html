@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ひし形配置図（10×10）</title>
+<style>
+:root{ --cs:60px; --accent:#1e88e5; }
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Meiryo",system-ui,sans-serif; background:#e9edf2; color:#222; overflow:hidden;}
+#app{display:flex; height:100vh;}
+/* ---------- 左パネル ---------- */
+#panel{width:384px; min-width:384px; background:#fff; border-right:1px solid #d5dbe3; padding:14px 14px 16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;}
+h1{font-size:17px; letter-spacing:.03em; display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid #e6eaef;}
+h1 .d{color:var(--accent);}
+#sideBody{display:flex; gap:12px; align-items:flex-start;}
+#tabCol{flex:none; display:flex; flex-direction:column; gap:6px;}
+#formCol{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px;}
+.sectionLabel{font-size:10.5px; color:#7a8694; letter-spacing:.08em; font-weight:700;}
+#tabs{display:grid; grid-template-columns:repeat(2,30px); gap:5px;}
+.tab{width:30px; height:28px; border-radius:7px; border:1px solid #c9d1da; background:#f6f8fa; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; padding:0; transition:.12s; color:#333;}
+.tab:hover{border-color:var(--accent);}
+.tab.active{color:#fff; border-color:transparent; font-weight:700;}
+#colorRow{display:flex; align-items:center; gap:6px;}
+#colorRow input[type=color]{width:40px; height:28px; border:1px solid #c9d1da; border-radius:6px; padding:2px; background:#fff; cursor:pointer;}
+#hexLabel{font-size:11px; color:#5f6b78; font-family:ui-monospace,monospace;}
+#swatches{display:flex; flex-wrap:wrap; gap:4px;}
+.swatch{width:15px; height:15px; border-radius:50%; cursor:pointer; border:1px solid rgba(0,0,0,.18); transition:.12s;}
+.swatch:hover{transform:scale(1.3);}
+#memberRows{display:flex; flex-direction:column; gap:6px;}
+.mrow{display:flex; align-items:center; gap:7px; border:1px solid transparent; border-radius:8px; padding:4px 6px; cursor:pointer; background:#fafbfc; transition:.12s;}
+.mrow:hover{background:#f0f4fa;}
+.mrow.armed{background:#e8f0fe; border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);}
+.mrow.dupError{background:#fff0f0; border-color:#e11; box-shadow:0 0 0 1px #e11;}
+.mrow.dupError input{border-color:#e11; background:#fff6f6;}
+.mrow .mnum{width:21px; height:21px; border-radius:50%; background:#dfe5ec; color:#333; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none;}
+.mrow.armed .mnum{background:var(--accent); color:#fff;}
+.mrow input{flex:1; min-width:0; border:1px solid #c8d0d9; border-radius:6px; padding:5px 7px; font-size:13px; outline:none; background:#fff;}
+.mrow input:focus{border-color:var(--accent);}
+.mcoin{width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; flex:none; box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.mcoin.leader{border:3px solid #e11; box-shadow:0 0 0 1px #fff, 0 0 0 4px #e11;}
+.mrow .status{font-size:9.5px; color:#7a8694; width:74px; text-align:right; flex:none; line-height:1.3;}
+.mdel{flex:none; width:20px; height:20px; border:none; background:transparent; color:#b0b8c1; font-size:13px; font-weight:700; line-height:1; cursor:pointer; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:.12s;}
+.mdel:hover{color:#fff; background:#e11;}
+.note{font-size:10px; color:#a33; background:#fdf0f0; border:1px solid #f0c9c9; border-radius:6px; padding:4px 8px;}
+#actions{display:flex; gap:8px;}
+button.btn{flex:1; border:1px solid #c8d0d9; background:#f6f8fa; border-radius:8px; padding:6px 0; cursor:pointer; font-size:12.5px;}
+button.btn:hover{background:#eef2f7;}
+button.btn.danger:hover{border-color:#e11; color:#e11;}
+/* ---------- メモ ---------- */
+#memoRow{display:flex; align-items:center; gap:7px; border:1px solid #c8d0d9; border-radius:8px; padding:5px 7px; background:#fafbfc; transition:.12s; cursor:text;}
+#memoRow:hover{background:#f0f4fa;}
+#memoRow.armed{background:#fff8e1; border-color:#f5a623; box-shadow:0 0 0 1px #f5a623;}
+#memoRow input{flex:1; min-width:0; border:1px solid #c8d0d9; border-radius:6px; padding:5px 7px; font-size:13px; outline:none; background:#fff;}
+#memoRow input:focus{border-color:#f5a623;}
+.memoTag{max-width:calc(var(--cs)*0.9); max-height:calc(var(--cs)*0.9); overflow:hidden; background:#fff8e1; border:1px solid #f5a623; border-radius:4px; padding:1px 3px; font-size:calc(var(--cs)*0.19); line-height:1.15; color:#7a4b00; font-weight:700; text-align:center; word-break:break-all;}
+#help{font-size:11px; line-height:1.75; color:#5f6b78; background:#f6f8fa; border:1px dashed #cdd5de; border-radius:8px; padding:8px 10px;}
+#help b{color:#333;}
+#help .red{color:#e11; font-weight:700;}
+#toast{position:fixed; left:50%; top:16px; transform:translateX(-50%) translateY(-60px); background:rgba(35,42,52,.92); color:#fff; font-size:13px; padding:9px 18px; border-radius:22px; opacity:0; transition:.25s; z-index:99; pointer-events:none; box-shadow:0 4px 14px rgba(0,0,0,.25);}
+#toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+/* ---------- ボード ---------- */
+#boardWrap{flex:1; min-width:0; display:grid; place-items:center; padding:30px; overflow:hidden; position:relative;}
+#dirArrow{position:absolute; top:14px; left:14px; width:200px; height:43px; z-index:15; cursor:pointer; transition:.15s; filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));}
+#dirArrow:hover{opacity:.85; transform:scale(1.05);}
+#dirArrow.flip{transform:scaleX(-1);}
+#dirArrow.flip:hover{transform:scaleX(-1) scale(1.05);}
+#board{width:min(calc(100vh - 160px), calc(100vw - 470px), 640px); min-width:320px; aspect-ratio:1; position:relative;}
+#grid{position:absolute; inset:0; transform:rotate(45deg) scale(0.7071); display:grid; grid-template-columns:repeat(10,1fr); grid-template-rows:repeat(10,1fr); gap:1.5px; background:rgba(30,42,64,.22);}
+.cell{position:relative; display:flex; align-items:center; justify-content:center;}
+.cell.unplaceable{background:rgba(70,80,96,.10);}
+.cell.placeable{background:#fff; cursor:pointer; transition:background .12s;}
+.cell.placeable:hover{background:#eaf3ff;}
+.cell-inner{transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; width:100%; height:100%;}
+.coin{width:calc(var(--cs)*0.62); height:calc(var(--cs)*0.62); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:calc(var(--cs)*0.30); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.3); box-shadow:0 1px 3px rgba(0,0,0,.28), inset 0 -2px 4px rgba(0,0,0,.18), inset 0 1px 2px rgba(255,255,255,.35);}
+.coin.leader{border:calc(var(--cs)*0.055) solid #e11; box-shadow:0 0 0 calc(var(--cs)*0.018) #fff, 0 0 0 calc(var(--cs)*0.095) #e11, 0 2px 6px rgba(0,0,0,.30);}
+.coin.other{opacity:.8;}
+/* ---------- 画面上の集結メンバー一覧（操作パネル外） ---------- */
+#groupSummary{position:fixed; top:14px; right:14px; width:260px; max-height:calc(100vh - 28px); overflow-y:auto; background:rgba(255,255,255,.96); border:1px solid #d5dbe3; border-radius:10px; padding:10px 12px; box-shadow:0 4px 14px rgba(0,0,0,.14); z-index:30;}
+#groupSummary h2{font-size:11px; color:#7a8694; letter-spacing:.06em; font-weight:700; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid #e6eaef;}
+#groupSummary h2 .gsNote{color:#e11; font-weight:700; margin-left:4px; letter-spacing:0;}
+.gsRow{display:flex; gap:6px; align-items:baseline; padding:4px 7px; margin-bottom:4px; border-radius:6px; font-size:12.5px;}
+.gsRow .gsNum{flex:none; font-weight:700;}
+.gsRow .gsNames{word-break:break-all; line-height:1.5;}
+#groupSummary .empty{font-size:12px; color:#9aa5b1; font-style:italic;}
+@media (max-width:860px){
+  body{overflow:auto;}
+  #app{flex-direction:column; height:auto;}
+  #panel{width:100%; min-width:0; border-right:none; border-bottom:1px solid #d5dbe3;}
+  #boardWrap{padding:36px 14px;}
+  #groupSummary{position:static; width:auto; max-height:none; margin:10px 14px; box-shadow:none;}
+  #dirArrow{width:120px; height:26px; top:8px; left:8px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="panel">
+    <h1><span class="d">◆</span>三方初期布陣</h1>
+    <div id="sideBody">
+      <div id="tabCol">
+        <div class="sectionLabel">集結 タブ</div>
+        <div id="tabs"></div>
+      </div>
+      <div id="formCol">
+        <div>
+          <div class="sectionLabel">集結の色（集結ごとに変更可）</div>
+          <div id="colorRow">
+            <input type="color" id="colorPicker" title="色を選択">
+            <span id="hexLabel"></span>
+          </div>
+          <div id="swatches"></div>
+        </div>
+        <div>
+          <div class="sectionLabel">名前入力（5名 / コマ＝頭文字）</div>
+          <div id="memberRows"></div>
+          <div class="note">※1番目の欄に入力した人のコマは、外郭が赤枠で強調されます</div>
+        </div>
+        <div>
+          <div class="sectionLabel">メモ（グレーのマスに配置）</div>
+          <div id="memoRow">
+            <input type="text" id="memoInput" maxlength="10" placeholder="メモ文言を入力">
+          </div>
+          <div class="note">※メモは配置不可（グレー）のマスに置けます。同じマスを再クリックで削除されます</div>
+        </div>
+        <div id="actions">
+          <button class="btn" id="btnClear">配置全解除</button>
+          <button class="btn danger" id="btnReset">データ初期化</button>
+        </div>
+        <div>
+          <div class="sectionLabel">GitHub 用データ</div>
+          <div id="dataActions" style="display:flex; gap:8px;">
+            <button class="btn" id="btnExport">書き出す(JSON)</button>
+            <button class="btn" id="btnImport">読み込む(JSON)</button>
+          </div>
+          <input type="file" id="fileImport" accept="application/json,.json" style="display:none">
+        </div>
+        <div id="help">
+          操作手順<br>
+          1. 集結①〜⑳のタブを選択<br>
+          2. 集結の色を選択（スウォッチでもOK）<br>
+          3. 名前欄をクリックして「選択中」にする<br>
+          4. ひし形の<b>白マス</b>をクリックで1名ずつ配置<br>
+          5. 配置済みマスを再クリックで解除<br>
+          6. 選択中の人が他マスに居れば移動します<br>
+          7. メモ欄をクリックして文言を入力し、<b>グレーのマス</b>をクリックで配置<br>
+          8. 左上の赤い矢印はクリックで左右の向きを切替<br>
+          9. 「書き出す」でJSONファイルを保存し、そのファイルをGitHubにアップ<br>
+          10. 別のPC／端末では、GitHubから落としたJSONを「読み込む」で反映
+        </div>
+      </div>
+    </div>
+  </aside>
+  <main id="boardWrap">
+    <svg id="dirArrow" viewBox="0 0 230 50" title="クリックで向きを切替">
+      <path d="M0,25 L60,0 L60,15 L230,15 L230,35 L60,35 L60,50 Z" fill="#e11"></path>
+    </svg>
+    <div id="board"><div id="grid"></div></div>
+  </main>
+</div>
+<div id="groupSummary"></div>
+<div id="toast"></div>
+<script>
+'use strict';
+/* ======== 定数 ======== */
+const SEED = null; // 【デモ用】動作確認時のサンプルデータ（配布版は null）
+const PALETTE = ['#e53935','#fb8c00','#fdd835','#43a047','#00897b','#1e88e5','#8e24aa','#f4511e','#546e7a','#6d4c41','#d81b60','#ffb300','#00acc1','#3949ab','#7b1fa2','#26a69a','#ef5350','#5c6bc0','#8d6e63','#757575'];
+const NUM = 10, GROUPS = 20, MEMBERS = 5;
+const NUM_STR = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
+const placeable = (r,c) => (r + c) % 2 === 1;   // 左端起点・斜め方向に1マス飛び（反転）
+const STORE_KEY = 'hikidashiConfigV1';
+
+/* ======== 状態 ======== */
+let state;
+function defaultState(){
+  const s = {
+    groups: PALETTE.map(color => ({ color, members: ['','','','',''] })),
+    placements: {},   // 'r,c' -> { g: 集結番号(0-19), m: メンバー番号(0-4) }
+    memos: {},        // 'r,c' -> メモ文言（グレーのマス専用）
+    arrowDir: 'left',
+    active: 0,
+    armed: -1,
+    memoArmed: false
+  };
+  if (SEED){
+    SEED.groups.forEach((g,i) => {
+      if (i < GROUPS){
+        if (g.color) s.groups[i].color = g.color;
+        if (Array.isArray(g.members)){
+          const arr = g.members.slice(0, MEMBERS);
+          while (arr.length < MEMBERS) arr.push('');
+          s.groups[i].members = arr;
+        }
+      }
+    });
+    Object.assign(s.placements, SEED.placements || {});
+  }
+  return s;
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw){
+      const s = JSON.parse(raw);
+      if (s && Array.isArray(s.groups) && s.groups.length === GROUPS){
+        s.groups = s.groups.map((g,i) => ({
+          color: /^#[0-9a-fA-F]{6}$/.test(g.color) ? g.color : PALETTE[i],
+          members: Array.from({length: MEMBERS}, (_,m) => typeof g.members[m] === 'string' ? g.members[m] : '')
+        }));
+        s.placements = s.placements || {};
+        for (const k in s.placements){
+          const p = s.placements[k];
+          if (!p || typeof p.g !== 'number' || typeof p.m !== 'number' || p.g<0 || p.g>=GROUPS || p.m<0 || p.m>=MEMBERS) delete s.placements[k];
+        }
+        s.memos = (s.memos && typeof s.memos === 'object') ? s.memos : {};
+        for (const k in s.memos){
+          if (typeof s.memos[k] !== 'string' || !s.memos[k].trim()) delete s.memos[k];
+        }
+        s.arrowDir = (s.arrowDir === 'right') ? 'right' : 'left';
+        s.active = Math.min(Math.max(s.active|0, 0), GROUPS-1);
+        s.armed = -1;
+        s.memoArmed = false;
+        return s;
+      }
+    }
+  }catch(e){}
+  return defaultState();
+}
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ======== 元に戻す（1手のみ） ======== */
+let undoSnapshot = null;
+function snapshot(){ undoSnapshot = JSON.stringify(state); }
+function undo(){
+  if (!undoSnapshot){ toast('これ以上戻せません'); return; }
+  let prev;
+  try{ prev = JSON.parse(undoSnapshot); }catch(e){ return; }
+  undoSnapshot = null;
+  state = prev;
+  save();
+  renderAll();
+  toast('1つ前の状態に戻しました');
+}
+document.addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if ((e.ctrlKey || e.metaKey) && k === 'z' && !e.shiftKey){
+    e.preventDefault();
+    undo();
+  }
+});
+
+/* ======== 重複名チェック ======== */
+function duplicateCounts(){
+  const counts = {};
+  state.groups.forEach(g => g.members.forEach(n => {
+    const t = n.trim();
+    if (t) counts[t] = (counts[t] || 0) + 1;
+  }));
+  return counts;
+}
+function updateDuplicateHighlights(){
+  const counts = duplicateCounts();
+  const g = state.groups[state.active];
+  document.querySelectorAll('.mrow').forEach(row => {
+    const m = +row.dataset.m;
+    const name = g.members[m].trim();
+    row.classList.toggle('dupError', !!name && counts[name] > 1);
+  });
+}
+
+/* ======== ユーティリティ ======== */
+function textColor(hex){
+  const n = parseInt(hex.slice(1), 16);
+  const r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  return (0.299*r + 0.587*g + 0.114*b) > 185 ? '#222222' : '#ffffff';
+}
+function firstChar(name){ const t = name.trim(); return t ? Array.from(t)[0] : ''; }
+function findCell(g, m){
+  for (const k in state.placements){ const p = state.placements[k]; if (p.g === g && p.m === m) return k; }
+  return null;
+}
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ======== DOM参照 ======== */
+const grid = document.getElementById('grid');
+const tabsEl = document.getElementById('tabs');
+const rowsEl = document.getElementById('memberRows');
+const colorPicker = document.getElementById('colorPicker');
+const hexLabel = document.getElementById('hexLabel');
+const swatchesEl = document.getElementById('swatches');
+const summaryEl = document.getElementById('groupSummary');
+const memoRowEl = document.getElementById('memoRow');
+const memoInputEl = document.getElementById('memoInput');
+const dirArrowEl = document.getElementById('dirArrow');
+
+/* ======== グリッド構築（一度だけ） ======== */
+function buildGrid(){
+  for (let r = 0; r < NUM; r++){
+    for (let c = 0; c < NUM; c++){
+      const cell = document.createElement('div');
+      cell.className = 'cell ' + (placeable(r,c) ? 'placeable' : 'unplaceable');
+      cell.dataset.r = r;
+      cell.dataset.c = c;
+      const inner = document.createElement('div');
+      inner.className = 'cell-inner';
+      cell.appendChild(inner);
+      grid.appendChild(cell);
+    }
+  }
+}
+grid.addEventListener('click', e => {
+  const cell = e.target.closest('.cell');
+  if (!cell) return;
+  const r = +cell.dataset.r, c = +cell.dataset.c;
+  const key = r + ',' + c;
+
+  if (state.memoArmed){
+    if (placeable(r,c)){ toast('メモはグレーのマスに配置してください'); return; }
+    if (state.memos[key]){
+      snapshot();
+      const text = state.memos[key];
+      delete state.memos[key];
+      save();
+      renderGrid();
+      toast('メモを削除：' + text);
+    } else {
+      const text = memoInputEl.value.trim();
+      if (!text){ toast('メモの文言を入力してください'); return; }
+      snapshot();
+      state.memos[key] = text;
+      save();
+      renderGrid();
+      toast('メモを配置：' + text);
+    }
+    return;
+  }
+
+  if (!placeable(r,c)) return;
+  const g = state.active;
+  if (state.placements[key]){
+    snapshot();
+    const p = state.placements[key];
+    delete state.placements[key];
+    save();
+    renderGrid();
+    updateStatuses();
+    toast('解除：集結' + NUM_STR[p.g] + ' ' + (state.groups[p.g].members[p.m].trim() || '未入力名'));
+    return;
+  }
+  if (state.armed < 0){ toast('先に 名前欄をクリックして 配置する人を選択してください'); return; }
+  const m = state.armed;
+  const name = state.groups[g].members[m].trim();
+  if (!name){ toast('名前が未入力です：' + (m+1) + '番目の欄'); return; }
+  snapshot();
+  const prev = findCell(g, m);
+  if (prev) delete state.placements[prev];   // 他マスに居れば移動
+  state.placements[key] = { g, m };
+  save();
+  renderGrid();
+  updateStatuses();
+  toast('配置：' + name + '（集結' + NUM_STR[g] + '）');
+});
+
+/* ======== メモ配置モード ======== */
+memoRowEl.addEventListener('click', () => {
+  state.armed = -1;
+  state.memoArmed = true;
+  save();
+  updateArmedUI();
+  toast('メモ配置モード → グレーのマスをクリックして配置');
+});
+memoInputEl.addEventListener('focus', () => {
+  state.armed = -1;
+  state.memoArmed = true;
+  save();
+  updateArmedUI();
+});
+
+/* ======== 左上の向き矢印 ======== */
+dirArrowEl.addEventListener('click', () => {
+  snapshot();
+  state.arrowDir = (state.arrowDir === 'left') ? 'right' : 'left';
+  save();
+  renderArrow();
+});
+function renderArrow(){
+  dirArrowEl.classList.toggle('flip', state.arrowDir === 'right');
+}
+
+/* ======== 描画 ======== */
+function renderTabs(){
+  tabsEl.innerHTML = '';
+  state.groups.forEach((g, i) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (i === state.active ? ' active' : '');
+    b.textContent = NUM_STR[i];
+    b.title = '集結' + NUM_STR[i];
+    if (i === state.active) b.style.background = g.color;
+    b.addEventListener('click', () => {
+      state.active = i;
+      state.armed = -1;
+      state.memoArmed = false;
+      save();
+      renderAll();
+    });
+    tabsEl.appendChild(b);
+  });
+}
+function statusText(m){
+  const cell = findCell(state.active, m);
+  const placed = cell ? '配置中(' + cell + ')' : '未配置';
+  return (m === state.armed ? '[選択中]' : '') + placed;
+}
+function previewCoin(m){
+  const g = state.groups[state.active];
+  const name = g.members[m].trim();
+  const coin = document.querySelector('.mrow[data-m="' + m + '"] .mcoin');
+  if (!coin) return;
+  coin.textContent = firstChar(name);
+  coin.style.background = g.color;
+  coin.style.color = textColor(g.color);
+  coin.classList.toggle('leader', m === 0 && !!name);
+  coin.title = name || '';
+}
+function renderMembers(){
+  rowsEl.innerHTML = '';
+  const g = state.groups[state.active];
+  for (let m = 0; m < MEMBERS; m++){
+    const row = document.createElement('div');
+    row.className = 'mrow';
+    row.dataset.m = m;
+    const num = document.createElement('span');
+    num.className = 'mnum';
+    num.textContent = m + 1;
+    if (m === 0) num.title = 'この欄＝赤枠強調';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.maxLength = 12;
+    input.placeholder = m === 0 ? '氏名（赤枠対象）' : '氏名';
+    input.value = g.members[m];
+    input.addEventListener('focus', () => {
+      snapshot();
+      state.memoArmed = false;
+      updateArmedUI();
+    });
+    input.addEventListener('input', () => {
+      g.members[m] = input.value;
+      state.armed = m;
+      save();
+      renderGrid();
+      updateArmedUI();
+      previewCoin(m);
+      updateStatuses();
+      updateDuplicateHighlights();
+      renderSummary();
+    });
+    input.addEventListener('blur', () => {
+      const name = input.value.trim();
+      if (!name) return;
+      const counts = duplicateCounts();
+      if (counts[name] > 1) toast('エラー：名前が重複しています「' + name + '」');
+    });
+    const delBtn = document.createElement('button');
+    delBtn.type = 'button';
+    delBtn.className = 'mdel';
+    delBtn.textContent = '✕';
+    delBtn.title = 'この名前を削除';
+    delBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      if (!g.members[m].trim()) return;
+      snapshot();
+      const prevCell = findCell(state.active, m);
+      if (prevCell) delete state.placements[prevCell];
+      g.members[m] = '';
+      input.value = '';
+      save();
+      renderGrid();
+      updateArmedUI();
+      previewCoin(m);
+      updateStatuses();
+      updateDuplicateHighlights();
+      renderSummary();
+      toast((m+1) + '番目の名前を削除しました');
+    });
+    const coin = document.createElement('div');
+    coin.className = 'mcoin';
+    const st = document.createElement('span');
+    st.className = 'status';
+    row.append(num, input, delBtn, coin, st);
+    row.addEventListener('click', () => {
+      state.armed = m;
+      state.memoArmed = false;
+      save();
+      updateArmedUI();
+      updateStatuses();
+      toast((m+1) + '番目を選択中 → 空きマス(白)をクリックして配置');
+    });
+    rowsEl.appendChild(row);
+    previewCoin(m);
+  }
+  updateArmedUI();
+  updateStatuses();
+  updateDuplicateHighlights();
+}
+function updateArmedUI(){
+  document.querySelectorAll('.mrow').forEach(row => {
+    const m = +row.dataset.m;
+    const armed = m === state.armed;
+    row.classList.toggle('armed', armed);
+    const num = row.querySelector('.mnum');
+    num.style.background = armed ? state.groups[state.active].color : '';
+    num.style.color = armed ? '#fff' : '';
+  });
+  memoRowEl.classList.toggle('armed', !!state.memoArmed);
+}
+function updateStatuses(){
+  document.querySelectorAll('.mrow').forEach(row => {
+    row.querySelector('.status').textContent = statusText(+row.dataset.m);
+  });
+}
+function renderGrid(){
+  for (const cell of grid.children){
+    const r = +cell.dataset.r, c = +cell.dataset.c;
+    const key = r + ',' + c;
+    const p = state.placements[key];
+    const memoText = state.memos[key];
+    const inner = cell.querySelector('.cell-inner');
+    cell.classList.toggle('occupied', !!p || !!memoText);
+    inner.innerHTML = '';
+    if (p){
+      const g = state.groups[p.g], m = p.m;
+      const name = g.members[m].trim();
+      const coin = document.createElement('div');
+      coin.className = 'coin' + (m === 0 ? ' leader' : '') + (p.g === state.active ? '' : ' other');
+      coin.style.background = g.color;
+      coin.style.color = textColor(g.color);
+      coin.textContent = firstChar(name) || '?';
+      coin.title = '集結' + NUM_STR[p.g] + ' ' + name + (m === 0 ? ' 【赤枠】' : '');
+      inner.appendChild(coin);
+    } else if (memoText){
+      const tag = document.createElement('div');
+      tag.className = 'memoTag';
+      tag.textContent = memoText;
+      tag.title = memoText;
+      inner.appendChild(tag);
+    }
+  }
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function renderSummary(){
+  const rows = [];
+  state.groups.forEach((g, i) => {
+    const names = g.members.map(n => n.trim()).filter(Boolean);
+    if (names.length) rows.push({ i, names });
+  });
+  const heading = '<h2>集結メンバー一覧<span class="gsNote">※先頭が箱出し</span></h2>';
+  if (!rows.length){
+    summaryEl.innerHTML = heading + '<div class="empty">まだ名前が入力されていません</div>';
+    return;
+  }
+  summaryEl.innerHTML = heading + rows.map(r => {
+    const g = state.groups[r.i];
+    const tc = textColor(g.color);
+    return '<div class="gsRow" style="background:' + g.color + ';color:' + tc + ';"><span class="gsNum" style="color:' + tc + ';">集結' + NUM_STR[r.i] + '</span><span class="gsNames">' + r.names.map(escapeHtml).join('、') + '</span></div>';
+  }).join('');
+}
+function syncColor(){
+  colorPicker.value = state.groups[state.active].color;
+  hexLabel.textContent = state.groups[state.active].color.toUpperCase();
+}
+function renderAll(){
+  renderTabs();
+  renderMembers();
+  renderGrid();
+  syncColor();
+  renderSummary();
+  renderArrow();
+}
+
+/* ======== イベント ======== */
+colorPicker.addEventListener('pointerdown', () => { snapshot(); });
+colorPicker.addEventListener('input', () => {
+  state.groups[state.active].color = colorPicker.value;
+  save();
+  renderAll();
+});
+PALETTE.forEach(hex => {
+  const s = document.createElement('div');
+  s.className = 'swatch';
+  s.style.background = hex;
+  s.title = hex;
+  s.addEventListener('click', () => {
+    snapshot();
+    state.groups[state.active].color = hex;
+    save();
+    renderAll();
+  });
+  swatchesEl.appendChild(s);
+});
+document.getElementById('btnClear').addEventListener('click', () => {
+  snapshot();
+  state.placements = {};
+  save();
+  renderGrid();
+  updateStatuses();
+  toast('全ての配置を解除しました');
+});
+document.getElementById('btnReset').addEventListener('click', () => {
+  snapshot();
+  localStorage.removeItem(STORE_KEY);
+  state = defaultState();
+  save();
+  renderAll();
+  toast('データを初期化しました');
+});
+
+/* ======== GitHubアップ用データの書き出し／読み込み ======== */
+document.getElementById('btnExport').addEventListener('click', () => {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const ts = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const fname = 'sanpou_haichi_' + ts.getFullYear() + pad(ts.getMonth()+1) + pad(ts.getDate()) + '_' + pad(ts.getHours()) + pad(ts.getMinutes()) + '.json';
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast('書き出しました：' + fname);
+});
+const fileImportEl = document.getElementById('fileImport');
+document.getElementById('btnImport').addEventListener('click', () => {
+  fileImportEl.click();
+});
+fileImportEl.addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const s = JSON.parse(reader.result);
+      if (!s || !Array.isArray(s.groups) || s.groups.length !== GROUPS){
+        throw new Error('形式が不正です');
+      }
+      const groups = s.groups.map((g, i) => ({
+        color: (g && /^#[0-9a-fA-F]{6}$/.test(g.color)) ? g.color : PALETTE[i],
+        members: Array.from({length: MEMBERS}, (_, m) => (g && Array.isArray(g.members) && typeof g.members[m] === 'string') ? g.members[m] : '')
+      }));
+      const placements = {};
+      if (s.placements && typeof s.placements === 'object'){
+        for (const k in s.placements){
+          const p = s.placements[k];
+          if (p && typeof p.g === 'number' && typeof p.m === 'number' && p.g >= 0 && p.g < GROUPS && p.m >= 0 && p.m < MEMBERS){
+            placements[k] = { g: p.g, m: p.m };
+          }
+        }
+      }
+      const memos = {};
+      if (s.memos && typeof s.memos === 'object'){
+        for (const k in s.memos){
+          if (typeof s.memos[k] === 'string' && s.memos[k].trim()) memos[k] = s.memos[k];
+        }
+      }
+      const arrowDir = (s.arrowDir === 'right') ? 'right' : 'left';
+      snapshot();
+      state.groups = groups;
+      state.placements = placements;
+      state.memos = memos;
+      state.arrowDir = arrowDir;
+      state.active = 0;
+      state.armed = -1;
+      state.memoArmed = false;
+      save();
+      renderAll();
+      toast('読み込みました：' + file.name);
+    }catch(err){
+      toast('読み込み失敗：JSONの形式を確認してください');
+    }
+    fileImportEl.value = '';
+  };
+  reader.readAsText(file, 'utf-8');
+});
+
+/* ======== サイズ連動（コマの大きさ） ======== */
+function setCs(){
+  const w = document.getElementById('board').clientWidth;
+  document.documentElement.style.setProperty('--cs', (w / NUM) + 'px');
+}
+new ResizeObserver(setCs).observe(document.getElementById('board'));
+
+/* ======== 起動 ======== */
+state = load();
+buildGrid();
+renderAll();
+setCs();
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
