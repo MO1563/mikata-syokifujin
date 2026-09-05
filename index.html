@@ -54,7 +54,15 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
 #memoRow.armed{background:#fff8e1; border-color:#f5a623; box-shadow:0 0 0 1px #f5a623;}
 #memoRow input{flex:1; min-width:0; border:1px solid #c8d0d9; border-radius:6px; padding:5px 7px; font-size:13px; outline:none; background:#fff;}
 #memoRow input:focus{border-color:#f5a623;}
-.memoTag{max-width:calc(var(--cs)*0.9); max-height:calc(var(--cs)*0.9); overflow:hidden; background:#fff8e1; border:1px solid #f5a623; border-radius:4px; padding:1px 3px; font-size:calc(var(--cs)*0.19); line-height:1.15; color:#7a4b00; font-weight:700; text-align:center; word-break:break-all;}
+#memoStyleRow{display:flex; align-items:center; gap:8px; margin-top:6px;}
+#memoStyleRow input[type=color]{width:36px; height:26px; border:1px solid #c9d1da; border-radius:6px; padding:2px; background:#fff; cursor:pointer;}
+#memoStyleRow select{border:1px solid #c9d1da; border-radius:6px; padding:4px 6px; font-size:12px; background:#fff; cursor:pointer;}
+#memoLayer{position:absolute; inset:0; z-index:12; pointer-events:none;}
+#memoLayer.armed{pointer-events:auto; cursor:crosshair;}
+.memoTag{position:absolute; transform:translate(-50%,-50%); max-width:170px; overflow:hidden; background:rgba(255,248,225,.95); border:1px solid #f5a623; border-radius:5px; padding:2px 6px; line-height:1.25; font-weight:700; text-align:center; word-break:break-word; pointer-events:auto; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.memoTag.size-small{font-size:11px;}
+.memoTag.size-medium{font-size:15px;}
+.memoTag.size-large{font-size:21px;}
 #help{font-size:11px; line-height:1.75; color:#5f6b78; background:#f6f8fa; border:1px dashed #cdd5de; border-radius:8px; padding:8px 10px;}
 #help b{color:#333;}
 #help .red{color:#e11; font-weight:700;}
@@ -72,7 +80,7 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
 .cell.unplaceable{background:rgba(70,80,96,.10);}
 .cell.placeable{background:#fff; cursor:pointer; transition:background .12s;}
 .cell.placeable:hover{background:#eaf3ff;}
-.cell-inner{transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; width:100%; height:100%;}
+.cell-inner{transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; width:100%; height:100%; position:relative;}
 .coin{width:calc(var(--cs)*0.62); height:calc(var(--cs)*0.62); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:calc(var(--cs)*0.30); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.3); box-shadow:0 1px 3px rgba(0,0,0,.28), inset 0 -2px 4px rgba(0,0,0,.18), inset 0 1px 2px rgba(255,255,255,.35);}
 .coin.leader{border:calc(var(--cs)*0.055) solid #e11; box-shadow:0 0 0 calc(var(--cs)*0.018) #fff, 0 0 0 calc(var(--cs)*0.095) #e11, 0 2px 6px rgba(0,0,0,.30);}
 .coin.other{opacity:.8;}
@@ -118,11 +126,19 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
           <div class="note">※1番目の欄に入力した人のコマは、外郭が赤枠で強調されます</div>
         </div>
         <div>
-          <div class="sectionLabel">メモ（グレーのマスに配置）</div>
+          <div class="sectionLabel">メモ（配置図の外側に置けます）</div>
           <div id="memoRow">
             <input type="text" id="memoInput" maxlength="10" placeholder="メモ文言を入力">
           </div>
-          <div class="note">※メモは配置不可（グレー）のマスに置けます。同じマスを再クリックで削除されます</div>
+          <div id="memoStyleRow">
+            <input type="color" id="memoColorPicker" title="メモの文字色" value="#7a4b00">
+            <select id="memoSizeSelect" title="メモの文字の大きさ">
+              <option value="small">小</option>
+              <option value="medium" selected>中</option>
+              <option value="large">大</option>
+            </select>
+          </div>
+          <div class="note">※メモはひし形の配置図の外側（余白部分）に自由に置けます。メモをクリックすると削除されます</div>
         </div>
         <div id="actions">
           <button class="btn" id="btnClear">配置全解除</button>
@@ -144,7 +160,7 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
           4. ひし形の<b>白マス</b>をクリックで1名ずつ配置<br>
           5. 配置済みマスを再クリックで解除<br>
           6. 選択中の人が他マスに居れば移動します<br>
-          7. メモ欄をクリックして文言を入力し、<b>グレーのマス</b>をクリックで配置<br>
+          7. メモ欄をクリックして文言・色・大きさを設定し、<b>配置図の外側の余白</b>をクリックで配置<br>
           8. 左上の赤い矢印はクリックで左右の向きを切替<br>
           9. 「書き出す」でJSONファイルを保存し、そのファイルをGitHubにアップ<br>
           10. 別のPC／端末では、GitHubから落としたJSONを「読み込む」で反映
@@ -157,6 +173,7 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
       <path d="M0,25 L60,0 L60,15 L230,15 L230,35 L60,35 L60,50 Z" fill="#e11"></path>
     </svg>
     <div id="board"><div id="grid"></div></div>
+    <div id="memoLayer"></div>
   </main>
 </div>
 <div id="groupSummary"></div>
@@ -177,7 +194,7 @@ function defaultState(){
   const s = {
     groups: PALETTE.map(color => ({ color, members: ['','','','',''] })),
     placements: {},   // 'r,c' -> { g: 集結番号(0-19), m: メンバー番号(0-4) }
-    memos: {},        // 'r,c' -> メモ文言（グレーのマス専用）
+    memos: {},        // id -> { x, y(%), text, color, size }（配置図の外側に浮かせて配置）
     arrowDir: 'left',
     active: 0,
     armed: -1,
@@ -198,6 +215,20 @@ function defaultState(){
   }
   return s;
 }
+function normalizeMemo(v){
+  if (v && typeof v === 'object' && typeof v.text === 'string' && v.text.trim()
+      && typeof v.x === 'number' && typeof v.y === 'number'
+      && v.x >= 0 && v.x <= 100 && v.y >= 0 && v.y <= 100){
+    return {
+      x: v.x,
+      y: v.y,
+      text: v.text,
+      color: /^#[0-9a-fA-F]{6}$/.test(v.color) ? v.color : '#7a4b00',
+      size: ['small','medium','large'].includes(v.size) ? v.size : 'medium'
+    };
+  }
+  return null;   // 旧形式（マス目に紐づくメモ）は仕様変更のため引き継がない
+}
 function load(){
   try{
     const raw = localStorage.getItem(STORE_KEY);
@@ -213,9 +244,11 @@ function load(){
           const p = s.placements[k];
           if (!p || typeof p.g !== 'number' || typeof p.m !== 'number' || p.g<0 || p.g>=GROUPS || p.m<0 || p.m>=MEMBERS) delete s.placements[k];
         }
-        s.memos = (s.memos && typeof s.memos === 'object') ? s.memos : {};
-        for (const k in s.memos){
-          if (typeof s.memos[k] !== 'string' || !s.memos[k].trim()) delete s.memos[k];
+        const memosIn = (s.memos && typeof s.memos === 'object') ? s.memos : {};
+        s.memos = {};
+        for (const k in memosIn){
+          const norm = normalizeMemo(memosIn[k]);
+          if (norm) s.memos[k] = norm;
         }
         s.arrowDir = (s.arrowDir === 'right') ? 'right' : 'left';
         s.active = Math.min(Math.max(s.active|0, 0), GROUPS-1);
@@ -299,7 +332,12 @@ const swatchesEl = document.getElementById('swatches');
 const summaryEl = document.getElementById('groupSummary');
 const memoRowEl = document.getElementById('memoRow');
 const memoInputEl = document.getElementById('memoInput');
+const memoColorEl = document.getElementById('memoColorPicker');
+const memoSizeEl = document.getElementById('memoSizeSelect');
 const dirArrowEl = document.getElementById('dirArrow');
+const memoLayerEl = document.getElementById('memoLayer');
+const boardEl = document.getElementById('board');
+const boardWrapEl = document.getElementById('boardWrap');
 
 /* ======== グリッド構築（一度だけ） ======== */
 function buildGrid(){
@@ -321,27 +359,6 @@ grid.addEventListener('click', e => {
   if (!cell) return;
   const r = +cell.dataset.r, c = +cell.dataset.c;
   const key = r + ',' + c;
-
-  if (state.memoArmed){
-    if (placeable(r,c)){ toast('メモはグレーのマスに配置してください'); return; }
-    if (state.memos[key]){
-      snapshot();
-      const text = state.memos[key];
-      delete state.memos[key];
-      save();
-      renderGrid();
-      toast('メモを削除：' + text);
-    } else {
-      const text = memoInputEl.value.trim();
-      if (!text){ toast('メモの文言を入力してください'); return; }
-      snapshot();
-      state.memos[key] = text;
-      save();
-      renderGrid();
-      toast('メモを配置：' + text);
-    }
-    return;
-  }
 
   if (!placeable(r,c)) return;
   const g = state.active;
@@ -369,19 +386,40 @@ grid.addEventListener('click', e => {
   toast('配置：' + name + '（集結' + NUM_STR[g] + '）');
 });
 
-/* ======== メモ配置モード ======== */
+/* ======== メモ配置モード（配置図の外側に浮かせて配置） ======== */
 memoRowEl.addEventListener('click', () => {
   state.armed = -1;
   state.memoArmed = true;
   save();
   updateArmedUI();
-  toast('メモ配置モード → グレーのマスをクリックして配置');
+  toast('メモ配置モード → 配置図の外側の余白をクリックして配置');
 });
 memoInputEl.addEventListener('focus', () => {
   state.armed = -1;
   state.memoArmed = true;
   save();
   updateArmedUI();
+});
+memoLayerEl.addEventListener('click', e => {
+  if (!state.memoArmed) return;
+  if (e.target.closest('.memoTag')) return;   // メモ本体のクリックは削除処理に任せる
+  const boardRect = boardEl.getBoundingClientRect();
+  if (e.clientX >= boardRect.left && e.clientX <= boardRect.right &&
+      e.clientY >= boardRect.top && e.clientY <= boardRect.bottom){
+    toast('メモは配置図の外側（余白部分）に置いてください');
+    return;
+  }
+  const text = memoInputEl.value.trim();
+  if (!text){ toast('メモの文言を入力してください'); return; }
+  const wrapRect = boardWrapEl.getBoundingClientRect();
+  const x = ((e.clientX - wrapRect.left) / wrapRect.width) * 100;
+  const y = ((e.clientY - wrapRect.top) / wrapRect.height) * 100;
+  snapshot();
+  const id = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  state.memos[id] = { x, y, text, color: memoColorEl.value, size: memoSizeEl.value };
+  save();
+  renderMemos();
+  toast('メモを配置：' + text);
 });
 
 /* ======== 左上の向き矢印 ======== */
@@ -520,6 +558,7 @@ function updateArmedUI(){
     num.style.color = armed ? '#fff' : '';
   });
   memoRowEl.classList.toggle('armed', !!state.memoArmed);
+  memoLayerEl.classList.toggle('armed', !!state.memoArmed);
 }
 function updateStatuses(){
   document.querySelectorAll('.mrow').forEach(row => {
@@ -531,9 +570,8 @@ function renderGrid(){
     const r = +cell.dataset.r, c = +cell.dataset.c;
     const key = r + ',' + c;
     const p = state.placements[key];
-    const memoText = state.memos[key];
     const inner = cell.querySelector('.cell-inner');
-    cell.classList.toggle('occupied', !!p || !!memoText);
+    cell.classList.toggle('occupied', !!p);
     inner.innerHTML = '';
     if (p){
       const g = state.groups[p.g], m = p.m;
@@ -545,13 +583,29 @@ function renderGrid(){
       coin.textContent = firstChar(name) || '?';
       coin.title = '集結' + NUM_STR[p.g] + ' ' + name + (m === 0 ? ' 【赤枠】' : '');
       inner.appendChild(coin);
-    } else if (memoText){
-      const tag = document.createElement('div');
-      tag.className = 'memoTag';
-      tag.textContent = memoText;
-      tag.title = memoText;
-      inner.appendChild(tag);
     }
+  }
+}
+function renderMemos(){
+  memoLayerEl.innerHTML = '';
+  for (const id in state.memos){
+    const memo = state.memos[id];
+    const tag = document.createElement('div');
+    tag.className = 'memoTag size-' + (memo.size || 'medium');
+    tag.textContent = memo.text;
+    tag.title = memo.text + '（クリックで削除）';
+    tag.style.color = memo.color || '#7a4b00';
+    tag.style.left = memo.x + '%';
+    tag.style.top = memo.y + '%';
+    tag.addEventListener('click', ev => {
+      ev.stopPropagation();
+      snapshot();
+      delete state.memos[id];
+      save();
+      renderMemos();
+      toast('メモを削除：' + memo.text);
+    });
+    memoLayerEl.appendChild(tag);
   }
 }
 function escapeHtml(s){
@@ -585,6 +639,7 @@ function renderAll(){
   syncColor();
   renderSummary();
   renderArrow();
+  renderMemos();
 }
 
 /* ======== イベント ======== */
@@ -671,7 +726,8 @@ fileImportEl.addEventListener('change', (e) => {
       const memos = {};
       if (s.memos && typeof s.memos === 'object'){
         for (const k in s.memos){
-          if (typeof s.memos[k] === 'string' && s.memos[k].trim()) memos[k] = s.memos[k];
+          const norm = normalizeMemo(s.memos[k]);
+          if (norm) memos[k] = norm;
         }
       }
       const arrowDir = (s.arrowDir === 'right') ? 'right' : 'left';
