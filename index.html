@@ -793,7 +793,7 @@ function renderSummary(){
     const color = p.groupColors[r.i];
     const tc = textColor(color);
     const namesHtml = r.members.map(x => {
-      const n = escapeHtml(x.name.trim()) + '(' + ROLE_LABELS[x.role] + ')';
+      const n = escapeHtml(x.name.trim());
       return x.boxOut ? '<b style="text-decoration:underline;">' + n + '</b>' : n;
     }).join('、');
     return '<div class="gsRow" style="background:' + color + ';color:' + tc + ';"><span class="gsNum" style="color:' + tc + ';">集結' + NUM_STR[r.i] + '</span><span class="gsNames">' + namesHtml + '</span></div>';
