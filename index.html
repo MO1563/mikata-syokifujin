@@ -13,7 +13,7 @@ body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Mei
 #panelToggle{flex:none; width:26px; border:none; border-right:1px solid #d5dbe3; background:#eef1f5; color:#5f6b78; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; transition:background .12s;}
 #panelToggle:hover{background:#e2e7ee; color:#2b6cff;}
 /* ---------- 左パネル ---------- */
-#panel{width:400px; min-width:400px; background:#fff; border-right:1px solid #d5dbe3; padding:14px 14px 16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;}
+#panel{width:440px; min-width:440px; background:#fff; border-right:1px solid #d5dbe3; padding:14px 14px 16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;}
 #panel.collapsed{display:none;}
 h1{font-size:17px; letter-spacing:.03em; display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid #e6eaef;}
 h1 .d{color:var(--accent);}
@@ -22,29 +22,32 @@ h1 .d{color:var(--accent);}
 #formCol{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px;}
 .sectionLabel{font-size:10.5px; color:#7a8694; letter-spacing:.08em; font-weight:700;}
 #tabs{display:grid; grid-template-columns:repeat(2,30px); gap:5px;}
-.tab{width:30px; height:28px; border-radius:7px; border:1px solid #c9d1da; background:#f6f8fa; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; padding:0; transition:.12s; color:#333;}
+.tab{width:30px; height:28px; border-radius:7px; border:1px solid #c9d1da; background:#f6f8fa; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; padding:0; transition:.12s; color:#333;}
 .tab:hover{border-color:var(--accent);}
-.tab.active{color:#fff; border-color:transparent; font-weight:700;}
+.tab.active{color:#fff; border-color:transparent; font-weight:700; background:var(--accent);}
 #colorRow{display:flex; align-items:center; gap:6px;}
+#colorRow select{border:1px solid #c9d1da; border-radius:6px; padding:4px 4px; font-size:11px; background:#fff; cursor:pointer;}
 #colorRow input[type=color]{width:40px; height:28px; border:1px solid #c9d1da; border-radius:6px; padding:2px; background:#fff; cursor:pointer;}
 #hexLabel{font-size:11px; color:#5f6b78; font-family:ui-monospace,monospace;}
 #swatches{display:flex; flex-wrap:wrap; gap:4px;}
 .swatch{width:15px; height:15px; border-radius:50%; cursor:pointer; border:1px solid rgba(0,0,0,.18); transition:.12s;}
 .swatch:hover{transform:scale(1.3);}
 /* ---------- メンバー一覧（50人・ドラッグ並び替え） ---------- */
-#peopleList{display:flex; flex-direction:column; gap:5px; max-height:400px; overflow-y:auto; padding:2px 2px 2px 0;}
+#peopleList{display:flex; flex-direction:column; gap:5px; max-height:400px; overflow-y:auto; overflow-x:auto; padding:2px 2px 2px 0;}
 .prow{display:flex; align-items:center; gap:5px; border:1px solid rgba(0,0,0,.14); border-radius:7px; padding:4px 6px; cursor:grab; transition:box-shadow .12s, opacity .12s;}
 .prow.armed{box-shadow:0 0 0 2px var(--accent);}
 .prow.dupError{box-shadow:0 0 0 2px #e11;}
 .prow.dragging{opacity:.35;}
 .prow.dragover{box-shadow:0 0 0 2px #222;}
 .prow .dragHandle{flex:none; font-size:12px; opacity:.6; line-height:1; user-select:none; cursor:grab;}
-.prow select.pGroup{flex:none; width:44px; border:1px solid #c8d0d9; border-radius:6px; padding:3px 1px; font-size:11px; background:#fff; color:#222; cursor:pointer;}
-.prow input.pName{flex:1; min-width:0; border:1px solid #c8d0d9; border-radius:6px; padding:5px 6px; font-size:12.5px; outline:none; background:#fff; color:#222;}
+.prow select.pGroup{flex:none; width:42px; border:1px solid #c8d0d9; border-radius:6px; padding:3px 1px; font-size:11px; background:#fff; color:#222; cursor:pointer;}
+.prow select.pRole{flex:none; width:42px; border:1px solid #c8d0d9; border-radius:6px; padding:3px 1px; font-size:10.5px; background:#fff; color:#222; cursor:pointer;}
+.prow input.pName{flex:1; min-width:60px; border:1px solid #c8d0d9; border-radius:6px; padding:5px 6px; font-size:12.5px; outline:none; background:#fff; color:#222;}
 .prow input.pName:focus{border-color:var(--accent);}
 .prow .pDel{flex:none; width:18px; height:18px; border:none; background:transparent; color:rgba(0,0,0,.4); font-size:12px; font-weight:700; line-height:1; cursor:pointer; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:.12s;}
 .prow .pDel:hover{color:#fff; background:#e11;}
 .prow .pCoin{flex:none; width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8.5px; font-weight:700; letter-spacing:-.03em; white-space:nowrap; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,.3);}
+.prow .pCoin.single{font-size:13px;}
 .prow .pCoin.leader{border:2px solid #e11; box-shadow:0 0 0 1px #fff, 0 0 0 3px #e11;}
 .prow .pBoxLabel{flex:none; display:flex; align-items:center; gap:2px; font-size:9.5px; font-weight:700; cursor:pointer; white-space:nowrap;}
 .prow .pBoxLabel input{cursor:pointer;}
@@ -53,6 +56,8 @@ h1 .d{color:var(--accent);}
 button.btn{flex:1; border:1px solid #c8d0d9; background:#f6f8fa; border-radius:8px; padding:6px 0; cursor:pointer; font-size:12.5px;}
 button.btn:hover{background:#eef2f7;}
 button.btn.danger:hover{border-color:#e11; color:#e11;}
+button.btn.btnSmall{flex:none; padding:5px 14px;}
+#csvRow{display:flex; align-items:center; gap:8px; margin-bottom:4px;}
 /* ---------- メモ ---------- */
 #memoRow{display:flex; align-items:center; gap:7px; border:1px solid #c8d0d9; border-radius:8px; padding:5px 7px; background:#fafbfc; transition:.12s; cursor:text;}
 #memoRow:hover{background:#f0f4fa;}
@@ -79,7 +84,7 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
 #dirArrow:hover{opacity:.85; transform:scale(1.05);}
 #dirArrow.flip{transform:scaleX(-1);}
 #dirArrow.flip:hover{transform:scaleX(-1) scale(1.05);}
-#board{width:min(calc(100vh - 160px), calc(100vw - 470px), 640px); min-width:320px; aspect-ratio:1; position:relative;}
+#board{width:min(calc(100vh - 160px), calc(100vw - 510px), 640px); min-width:320px; aspect-ratio:1; position:relative;}
 #grid{position:absolute; inset:0; transform:rotate(45deg) scale(0.7071); display:grid; grid-template-columns:repeat(10,1fr); grid-template-rows:repeat(10,1fr); gap:1.5px; background:rgba(30,42,64,.22);}
 .cell{position:relative; display:flex; align-items:center; justify-content:center;}
 .cell.unplaceable{background:rgba(70,80,96,.10);}
@@ -87,6 +92,7 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
 .cell.placeable:hover{background:#eaf3ff;}
 .cell-inner{transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; width:100%; height:100%; position:relative;}
 .coin{width:calc(var(--cs)*0.62); height:calc(var(--cs)*0.62); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:calc(var(--cs)*0.20); letter-spacing:-.02em; white-space:nowrap; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.3); box-shadow:0 1px 3px rgba(0,0,0,.28), inset 0 -2px 4px rgba(0,0,0,.18), inset 0 1px 2px rgba(255,255,255,.35);}
+.coin.single{font-size:calc(var(--cs)*0.34);}
 .coin.leader{border:calc(var(--cs)*0.055) solid #e11; box-shadow:0 0 0 calc(var(--cs)*0.018) #fff, 0 0 0 calc(var(--cs)*0.095) #e11, 0 2px 6px rgba(0,0,0,.30);}
 /* ---------- 画面上の集結メンバー一覧（操作パネル外） ---------- */
 #groupSummary{position:fixed; top:14px; right:14px; width:260px; max-height:calc(100vh - 28px); overflow-y:auto; background:rgba(255,255,255,.96); border:1px solid #d5dbe3; border-radius:10px; padding:10px 12px; box-shadow:0 4px 14px rgba(0,0,0,.14); z-index:30;}
@@ -114,13 +120,14 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
     <h1><span class="d">◆</span>三方初期布陣</h1>
     <div id="sideBody">
       <div id="tabCol">
-        <div class="sectionLabel">集結 色編集</div>
+        <div class="sectionLabel">パターン選択</div>
         <div id="tabs"></div>
       </div>
       <div id="formCol">
         <div>
           <div class="sectionLabel">集結の色（集結ごとに変更可）</div>
           <div id="colorRow">
+            <select id="colorGroupSelect" title="編集する集結"></select>
             <input type="color" id="colorPicker" title="色を選択">
             <span id="hexLabel"></span>
           </div>
@@ -128,8 +135,13 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
         </div>
         <div>
           <div class="sectionLabel">メンバー一覧（50人 / ドラッグで並び替え）</div>
+          <div id="csvRow">
+            <button class="btn btnSmall" id="btnCsvImport">CSV取込（氏名のみ）</button>
+            <input type="file" id="fileCsv" accept=".csv,text/csv" style="display:none">
+          </div>
           <div id="peopleList"></div>
-          <div class="note">※箱出しにチェックが入っている人のコマは、外郭が赤枠で強調されます</div>
+          <div class="note">※集結番号・役割（中/旗本）を選び、箱出しにチェックが入っている人のコマは外郭が赤枠で強調されます</div>
+          <div class="note">※CSV取込は氏名だけのCSV（1行1名、または1列目が氏名）を読み込み、選択中のパターンの1人目から順に反映します。50人を超える分・既存の名前が入っていない残りの行は変更されません</div>
         </div>
         <div>
           <div class="sectionLabel">メモ（配置図の外側に置けます）</div>
@@ -161,16 +173,17 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
         <div id="help">
           操作手順<br>
           1. 左端の矢印ボタンで操作パネルを開閉<br>
-          2. 各行の集結番号（プルダウン）でメンバーの所属集結を選択<br>
-          3. 名前を入力し、箱出しの人にはチェックを入れる<br>
-          4. 行はドラッグで並び替え可能（左端の「⋮⋮」をつかんで移動）<br>
-          5. 集結タブと色欄で、集結ごとの色を編集できます<br>
-          6. 行をクリックして「選択中」にし、ひし形の<b>白マス</b>をクリックで配置<br>
-          7. 配置済みマスを再クリックで解除、選択中の人が他マスに居れば移動<br>
-          8. メモ欄をクリックして文言・色・大きさを設定し、<b>配置図の外側の余白</b>をクリックで配置<br>
-          9. 左上の赤い矢印はクリックで左右の向きを切替<br>
-          10. 「書き出す」でHTMLファイルを保存すればそのままGitHubにアップ可能（ダブルクリックで内容を確認できます）<br>
-          11. 別のPC／端末では、GitHubから落としたHTMLファイルを「読み込む」で反映
+          2. 左のタブで「パターン1〜10」を切替（それぞれ独立した50人名簿・配置を持てます）<br>
+          3. 各行の集結番号（プルダウン）でメンバーの所属集結①〜⑳を選択<br>
+          4. 役割（中／旗本）を選び、名前を入力。箱出しの人にはチェックを入れる<br>
+          5. 行はドラッグで並び替え可能（左端の「⋮⋮」をつかんで移動）<br>
+          6. 「集結の色」欄のプルダウンで編集したい集結①〜⑳を選び、色を変更できます<br>
+          7. 行をクリックして「選択中」にし、ひし形の<b>白マス</b>をクリックで配置<br>
+          8. 配置済みマスを再クリックで解除、選択中の人が他マスに居れば移動<br>
+          9. メモ欄をクリックして文言・色・大きさを設定し、<b>配置図の外側の余白</b>をクリックで配置<br>
+          10. 左上の赤い矢印はクリックで左右の向きを切替<br>
+          11. 「書き出す」でHTMLファイルを保存すればそのままGitHubにアップ可能（ダブルクリックで内容を確認できます）<br>
+          12. 別のPC／端末では、GitHubから落としたHTMLファイルを「読み込む」で反映
         </div>
       </div>
     </div>
@@ -190,27 +203,31 @@ button.btn.danger:hover{border-color:#e11; color:#e11;}
 /* ======== 定数 ======== */
 const SEED = null; // 【デモ用】動作確認時のサンプルデータ（配布版は null）
 const PALETTE = ['#e53935','#fb8c00','#fdd835','#43a047','#00897b','#1e88e5','#8e24aa','#f4511e','#546e7a','#6d4c41','#d81b60','#ffb300','#00acc1','#3949ab','#7b1fa2','#26a69a','#ef5350','#5c6bc0','#8d6e63','#757575'];
-const NUM = 10, GROUPS = 20, PEOPLE = 50;
+const NUM = 10, GROUPS = 20, PEOPLE = 50, PATTERNS = 10;
 const NUM_STR = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
+const ROLE_LABELS = { chu: '中', hatamoto: '旗本' };
 const placeable = (r,c) => (r + c) % 2 === 1;   // 左端起点・斜め方向に1マス飛び（反転）
-const STORE_KEY = 'hikidashiConfigV2';
+const STORE_KEY = 'hikidashiConfigV3';
 
 /* ======== 状態 ======== */
 let state;
-function defaultState(){
-  const people = [];
-  for (let i = 0; i < PEOPLE; i++){
-    people.push({ id: 'p' + i, group: 0, name: '', boxOut: false });
-  }
+function cur(){ return state.patterns[state.activePattern]; }
+function makeEmptyPattern(){
   return {
     groupColors: PALETTE.slice(),
-    people: people,          // 50人分：{ id, group(0-19), name, boxOut }
+    people: Array.from({length: PEOPLE}, (_, i) => ({ id: 'p' + i, group: 0, name: '', boxOut: false, role: 'chu' })),
     placements: {},          // 'r,c' -> personId
-    memos: {},               // id -> { x, y(%), text, color, size }（配置図の外側に浮かせて配置）
-    arrowDir: 'left',
-    active: 0,                // 色編集中の集結番号
-    armed: null,              // 配置対象として選択中のpersonId
+    memos: {},               // id -> { x, y(%), text, color, size }
+    colorTab: 0,             // 色編集中の集結番号
+    armed: null,             // 配置対象として選択中のpersonId
     memoArmed: false
+  };
+}
+function defaultState(){
+  return {
+    patterns: Array.from({length: PATTERNS}, () => makeEmptyPattern()),
+    activePattern: 0,
+    arrowDir: 'left'
   };
 }
 function normalizeMemo(v){
@@ -225,49 +242,54 @@ function normalizeMemo(v){
       size: ['small','medium','large'].includes(v.size) ? v.size : 'medium'
     };
   }
-  return null;   // 旧形式（マス目に紐づくメモ）は仕様変更のため引き継がない
+  return null;
 }
-function normalizeState(raw){
-  if (!raw || typeof raw !== 'object') return null;
-  const s = {};
-  s.groupColors = Array.from({length: GROUPS}, (_,i) => {
-    const c = Array.isArray(raw.groupColors) ? raw.groupColors[i] : null;
+function normalizePattern(raw){
+  const r = (raw && typeof raw === 'object') ? raw : {};
+  const groupColors = Array.from({length: GROUPS}, (_,i) => {
+    const c = Array.isArray(r.groupColors) ? r.groupColors[i] : null;
     return (typeof c === 'string' && /^#[0-9a-fA-F]{6}$/.test(c)) ? c : PALETTE[i];
   });
-  const peopleIn = Array.isArray(raw.people) ? raw.people : [];
-  s.people = Array.from({length: PEOPLE}, (_,i) => {
+  const peopleIn = Array.isArray(r.people) ? r.people : [];
+  const people = Array.from({length: PEOPLE}, (_,i) => {
     const p = peopleIn[i] || {};
     return {
       id: (typeof p.id === 'string' && p.id) ? p.id : ('p' + i),
       group: (typeof p.group === 'number' && p.group >= 0 && p.group < GROUPS) ? p.group : 0,
       name: typeof p.name === 'string' ? p.name : '',
-      boxOut: !!p.boxOut
+      boxOut: !!p.boxOut,
+      role: (p.role === 'hatamoto') ? 'hatamoto' : 'chu'
     };
   });
   const seenIds = new Set();
-  s.people.forEach((p,i) => {
+  people.forEach((p,i) => {
     if (seenIds.has(p.id)) p.id = 'p' + i + '_' + Math.random().toString(36).slice(2,6);
     seenIds.add(p.id);
   });
-  const validIds = new Set(s.people.map(p => p.id));
-  s.placements = {};
-  if (raw.placements && typeof raw.placements === 'object'){
-    for (const k in raw.placements){
-      const pid = raw.placements[k];
-      if (typeof pid === 'string' && validIds.has(pid)) s.placements[k] = pid;
+  const validIds = new Set(people.map(p => p.id));
+  const placements = {};
+  if (r.placements && typeof r.placements === 'object'){
+    for (const k in r.placements){
+      const pid = r.placements[k];
+      if (typeof pid === 'string' && validIds.has(pid)) placements[k] = pid;
     }
   }
-  const memosIn = (raw.memos && typeof raw.memos === 'object') ? raw.memos : {};
-  s.memos = {};
+  const memosIn = (r.memos && typeof r.memos === 'object') ? r.memos : {};
+  const memos = {};
   for (const k in memosIn){
     const norm = normalizeMemo(memosIn[k]);
-    if (norm) s.memos[k] = norm;
+    if (norm) memos[k] = norm;
   }
-  s.arrowDir = (raw.arrowDir === 'right') ? 'right' : 'left';
-  s.active = (typeof raw.active === 'number') ? Math.min(Math.max(raw.active|0, 0), GROUPS-1) : 0;
-  s.armed = null;
-  s.memoArmed = false;
-  return s;
+  const colorTab = (typeof r.colorTab === 'number') ? Math.min(Math.max(r.colorTab|0, 0), GROUPS-1) : 0;
+  return { groupColors, people, placements, memos, colorTab, armed: null, memoArmed: false };
+}
+function normalizeState(raw){
+  if (!raw || typeof raw !== 'object') return null;
+  const patternsIn = Array.isArray(raw.patterns) ? raw.patterns : [];
+  const patterns = Array.from({length: PATTERNS}, (_,i) => normalizePattern(patternsIn[i]));
+  const activePattern = (typeof raw.activePattern === 'number') ? Math.min(Math.max(raw.activePattern|0, 0), PATTERNS-1) : 0;
+  const arrowDir = (raw.arrowDir === 'right') ? 'right' : 'left';
+  return { patterns, activePattern, arrowDir };
 }
 function getEmbeddedState(){
   const el = document.getElementById('appStateData');
@@ -315,7 +337,7 @@ document.addEventListener('keydown', e => {
 /* ======== 重複名チェック ======== */
 function duplicateCounts(){
   const counts = {};
-  state.people.forEach(p => {
+  cur().people.forEach(p => {
     const t = p.name.trim();
     if (t) counts[t] = (counts[t] || 0) + 1;
   });
@@ -324,7 +346,7 @@ function duplicateCounts(){
 function updateDuplicateHighlights(){
   const counts = duplicateCounts();
   document.querySelectorAll('.prow').forEach(row => {
-    const person = state.people.find(p => p.id === row.dataset.id);
+    const person = cur().people.find(p => p.id === row.dataset.id);
     if (!person) return;
     const name = person.name.trim();
     row.classList.toggle('dupError', !!name && counts[name] > 1);
@@ -339,7 +361,8 @@ function textColor(hex){
 }
 function firstChars(name, n){ const t = name.trim(); return t ? Array.from(t).slice(0, n).join('') : ''; }
 function findPlacementCellByPersonId(id){
-  for (const k in state.placements){ if (state.placements[k] === id) return k; }
+  const placements = cur().placements;
+  for (const k in placements){ if (placements[k] === id) return k; }
   return null;
 }
 let toastTimer;
@@ -357,6 +380,7 @@ const panelEl = document.getElementById('panel');
 const panelToggleEl = document.getElementById('panelToggle');
 const tabsEl = document.getElementById('tabs');
 const peopleListEl = document.getElementById('peopleList');
+const colorGroupSelectEl = document.getElementById('colorGroupSelect');
 const colorPicker = document.getElementById('colorPicker');
 const hexLabel = document.getElementById('hexLabel');
 const swatchesEl = document.getElementById('swatches');
@@ -391,27 +415,28 @@ grid.addEventListener('click', e => {
   if (!cell) return;
   const r = +cell.dataset.r, c = +cell.dataset.c;
   const key = r + ',' + c;
+  const p = cur();
 
   if (!placeable(r,c)) return;
-  if (state.placements[key]){
+  if (p.placements[key]){
     snapshot();
-    const pid = state.placements[key];
-    const person = state.people.find(p => p.id === pid);
-    delete state.placements[key];
+    const pid = p.placements[key];
+    const person = p.people.find(x => x.id === pid);
+    delete p.placements[key];
     save();
     renderGrid();
     toast('解除：' + (person ? (person.name.trim() || '未入力名') : '(不明な人)'));
     return;
   }
-  if (!state.armed){ toast('先に メンバー欄をクリックして 配置する人を選択してください'); return; }
-  const person = state.people.find(p => p.id === state.armed);
+  if (!p.armed){ toast('先に メンバー欄をクリックして 配置する人を選択してください'); return; }
+  const person = p.people.find(x => x.id === p.armed);
   if (!person){ toast('選択中の人が見つかりません'); return; }
   const name = person.name.trim();
   if (!name){ toast('名前が未入力です'); return; }
   snapshot();
   const prevKey = findPlacementCellByPersonId(person.id);
-  if (prevKey) delete state.placements[prevKey];   // 他マスに居れば移動
-  state.placements[key] = person.id;
+  if (prevKey) delete p.placements[prevKey];   // 他マスに居れば移動
+  p.placements[key] = person.id;
   save();
   renderGrid();
   toast('配置：' + name + '（集結' + NUM_STR[person.group] + '）');
@@ -419,20 +444,21 @@ grid.addEventListener('click', e => {
 
 /* ======== メモ配置モード（配置図の外側に浮かせて配置） ======== */
 memoRowEl.addEventListener('click', () => {
-  state.armed = null;
-  state.memoArmed = true;
+  cur().armed = null;
+  cur().memoArmed = true;
   save();
   updateArmedUI();
   toast('メモ配置モード → 配置図の外側の余白をクリックして配置');
 });
 memoInputEl.addEventListener('focus', () => {
-  state.armed = null;
-  state.memoArmed = true;
+  cur().armed = null;
+  cur().memoArmed = true;
   save();
   updateArmedUI();
 });
 memoLayerEl.addEventListener('click', e => {
-  if (!state.memoArmed) return;
+  const p = cur();
+  if (!p.memoArmed) return;
   if (e.target.closest('.memoTag')) return;   // メモ本体のクリックは削除処理に任せる
   const boardRect = boardEl.getBoundingClientRect();
   if (e.clientX >= boardRect.left && e.clientX <= boardRect.right &&
@@ -447,7 +473,7 @@ memoLayerEl.addEventListener('click', e => {
   const y = ((e.clientY - wrapRect.top) / wrapRect.height) * 100;
   snapshot();
   const id = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-  state.memos[id] = { x, y, text, color: memoColorEl.value, size: memoSizeEl.value };
+  p.memos[id] = { x, y, text, color: memoColorEl.value, size: memoSizeEl.value };
   save();
   renderMemos();
   toast('メモを配置：' + text);
@@ -477,39 +503,51 @@ function renderArrow(){
 /* ======== 描画 ======== */
 function renderTabs(){
   tabsEl.innerHTML = '';
-  for (let i = 0; i < GROUPS; i++){
+  for (let i = 0; i < PATTERNS; i++){
     const b = document.createElement('button');
-    b.className = 'tab' + (i === state.active ? ' active' : '');
-    b.textContent = NUM_STR[i];
-    b.title = '集結' + NUM_STR[i] + 'の色を編集';
-    if (i === state.active) b.style.background = state.groupColors[i];
+    b.className = 'tab' + (i === state.activePattern ? ' active' : '');
+    b.textContent = String(i + 1);
+    b.title = 'パターン' + (i + 1);
     b.addEventListener('click', () => {
-      state.active = i;
+      if (i === state.activePattern) return;
+      state.activePattern = i;
       save();
       renderAll();
     });
     tabsEl.appendChild(b);
   }
 }
+function buildColorGroupSelect(){
+  colorGroupSelectEl.innerHTML = '';
+  NUM_STR.forEach((label, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = '集結' + label;
+    colorGroupSelectEl.appendChild(opt);
+  });
+}
 function applyRowStyle(row, person){
-  const color = state.groupColors[person.group];
+  const color = cur().groupColors[person.group];
   row.style.background = color;
   row.style.color = textColor(color);
 }
 function updateRowCoin(row, person){
   const coin = row.querySelector('.pCoin');
   if (!coin) return;
-  const color = state.groupColors[person.group];
+  const color = cur().groupColors[person.group];
   const name = person.name.trim();
+  const text = firstChars(name, 2);
   coin.style.background = color;
   coin.style.color = textColor(color);
-  coin.textContent = firstChars(name, 2);
+  coin.textContent = text;
   coin.classList.toggle('leader', !!person.boxOut);
+  coin.classList.toggle('single', text.length === 1);
   coin.title = name || '';
 }
 function renderPeopleList(){
   peopleListEl.innerHTML = '';
-  state.people.forEach(person => {
+  const p = cur();
+  p.people.forEach(person => {
     const row = document.createElement('div');
     row.className = 'prow';
     row.dataset.id = person.id;
@@ -541,6 +579,23 @@ function renderPeopleList(){
       renderSummary();
     });
 
+    const roleSel = document.createElement('select');
+    roleSel.className = 'pRole';
+    Object.keys(ROLE_LABELS).forEach(val => {
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = ROLE_LABELS[val];
+      roleSel.appendChild(opt);
+    });
+    roleSel.value = person.role;
+    roleSel.title = '役割';
+    roleSel.addEventListener('click', ev => ev.stopPropagation());
+    roleSel.addEventListener('change', () => {
+      snapshot();
+      person.role = roleSel.value;
+      save();
+    });
+
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.className = 'pName';
@@ -550,14 +605,14 @@ function renderPeopleList(){
     nameInput.addEventListener('click', ev => ev.stopPropagation());
     nameInput.addEventListener('focus', () => {
       snapshot();
-      state.armed = person.id;
-      state.memoArmed = false;
+      cur().armed = person.id;
+      cur().memoArmed = false;
       save();
       updateArmedUI();
     });
     nameInput.addEventListener('input', () => {
       person.name = nameInput.value;
-      state.armed = person.id;
+      cur().armed = person.id;
       save();
       updateRowCoin(row, person);
       renderGrid();
@@ -582,7 +637,7 @@ function renderPeopleList(){
       if (!person.name.trim()) return;
       snapshot();
       const prevKey = findPlacementCellByPersonId(person.id);
-      if (prevKey) delete state.placements[prevKey];
+      if (prevKey) delete cur().placements[prevKey];
       person.name = '';
       nameInput.value = '';
       save();
@@ -611,11 +666,11 @@ function renderPeopleList(){
     });
     boxLabel.append(boxChk, document.createTextNode('箱出'));
 
-    row.append(handle, groupSel, nameInput, delBtn, coin, boxLabel);
+    row.append(handle, groupSel, roleSel, nameInput, delBtn, coin, boxLabel);
 
     row.addEventListener('click', () => {
-      state.armed = person.id;
-      state.memoArmed = false;
+      cur().armed = person.id;
+      cur().memoArmed = false;
       save();
       updateArmedUI();
       toast((person.name.trim() || '未入力の人') + ' を選択中 → 空きマス(白)をクリックして配置');
@@ -653,49 +708,54 @@ function attachDragHandlers(row, person){
     row.classList.remove('dragover');
     if (!dragSrcId || dragSrcId === person.id) return;
     snapshot();
-    const fromIdx = state.people.findIndex(p => p.id === dragSrcId);
-    const toIdx = state.people.findIndex(p => p.id === person.id);
+    const people = cur().people;
+    const fromIdx = people.findIndex(p => p.id === dragSrcId);
+    const toIdx = people.findIndex(p => p.id === person.id);
     if (fromIdx < 0 || toIdx < 0) return;
-    const [moved] = state.people.splice(fromIdx, 1);
-    state.people.splice(toIdx, 0, moved);
+    const [moved] = people.splice(fromIdx, 1);
+    people.splice(toIdx, 0, moved);
     save();
     renderPeopleList();
     toast('並び順を変更しました');
   });
 }
 function updateArmedUI(){
+  const p = cur();
   document.querySelectorAll('.prow').forEach(row => {
-    row.classList.toggle('armed', row.dataset.id === state.armed);
+    row.classList.toggle('armed', row.dataset.id === p.armed);
   });
-  memoRowEl.classList.toggle('armed', !!state.memoArmed);
-  memoLayerEl.classList.toggle('armed', !!state.memoArmed);
+  memoRowEl.classList.toggle('armed', !!p.memoArmed);
+  memoLayerEl.classList.toggle('armed', !!p.memoArmed);
 }
 function renderGrid(){
+  const p = cur();
   for (const cell of grid.children){
     const r = +cell.dataset.r, c = +cell.dataset.c;
     const key = r + ',' + c;
-    const pid = state.placements[key];
+    const pid = p.placements[key];
     const inner = cell.querySelector('.cell-inner');
-    const person = pid ? state.people.find(p => p.id === pid) : null;
+    const person = pid ? p.people.find(x => x.id === pid) : null;
     cell.classList.toggle('occupied', !!person);
     inner.innerHTML = '';
     if (person){
-      const color = state.groupColors[person.group];
+      const color = p.groupColors[person.group];
       const name = person.name.trim();
+      const text = firstChars(name, 2) || '?';
       const coin = document.createElement('div');
-      coin.className = 'coin' + (person.boxOut ? ' leader' : '');
+      coin.className = 'coin' + (person.boxOut ? ' leader' : '') + (text.length === 1 ? ' single' : '');
       coin.style.background = color;
       coin.style.color = textColor(color);
-      coin.textContent = firstChars(name, 2) || '?';
-      coin.title = '集結' + NUM_STR[person.group] + ' ' + name + (person.boxOut ? ' 【箱出し】' : '');
+      coin.textContent = text;
+      coin.title = '集結' + NUM_STR[person.group] + ' ' + name + (person.boxOut ? ' 【箱出し】' : '') + '（' + ROLE_LABELS[person.role] + '）';
       inner.appendChild(coin);
     }
   }
 }
 function renderMemos(){
   memoLayerEl.innerHTML = '';
-  for (const id in state.memos){
-    const memo = state.memos[id];
+  const memos = cur().memos;
+  for (const id in memos){
+    const memo = memos[id];
     const tag = document.createElement('div');
     tag.className = 'memoTag size-' + (memo.size || 'medium');
     tag.textContent = memo.text;
@@ -706,7 +766,7 @@ function renderMemos(){
     tag.addEventListener('click', ev => {
       ev.stopPropagation();
       snapshot();
-      delete state.memos[id];
+      delete cur().memos[id];
       save();
       renderMemos();
       toast('メモを削除：' + memo.text);
@@ -718,9 +778,10 @@ function escapeHtml(s){
   return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function renderSummary(){
+  const p = cur();
   const rows = [];
   for (let g = 0; g < GROUPS; g++){
-    const members = state.people.filter(p => p.group === g && p.name.trim());
+    const members = p.people.filter(x => x.group === g && x.name.trim());
     if (members.length) rows.push({ i: g, members });
   }
   const heading = '<h2>集結メンバー一覧<span class="gsNote">※太字下線＝箱出し</span></h2>';
@@ -729,18 +790,20 @@ function renderSummary(){
     return;
   }
   summaryEl.innerHTML = heading + rows.map(r => {
-    const color = state.groupColors[r.i];
+    const color = p.groupColors[r.i];
     const tc = textColor(color);
-    const namesHtml = r.members.map(p => {
-      const n = escapeHtml(p.name.trim());
-      return p.boxOut ? '<b style="text-decoration:underline;">' + n + '</b>' : n;
+    const namesHtml = r.members.map(x => {
+      const n = escapeHtml(x.name.trim()) + '(' + ROLE_LABELS[x.role] + ')';
+      return x.boxOut ? '<b style="text-decoration:underline;">' + n + '</b>' : n;
     }).join('、');
     return '<div class="gsRow" style="background:' + color + ';color:' + tc + ';"><span class="gsNum" style="color:' + tc + ';">集結' + NUM_STR[r.i] + '</span><span class="gsNames">' + namesHtml + '</span></div>';
   }).join('');
 }
 function syncColor(){
-  colorPicker.value = state.groupColors[state.active];
-  hexLabel.textContent = state.groupColors[state.active].toUpperCase();
+  const p = cur();
+  colorGroupSelectEl.value = p.colorTab;
+  colorPicker.value = p.groupColors[p.colorTab];
+  hexLabel.textContent = p.groupColors[p.colorTab].toUpperCase();
 }
 function renderAll(){
   renderTabs();
@@ -753,9 +816,15 @@ function renderAll(){
 }
 
 /* ======== イベント ======== */
+buildColorGroupSelect();
+colorGroupSelectEl.addEventListener('change', () => {
+  cur().colorTab = +colorGroupSelectEl.value;
+  save();
+  syncColor();
+});
 colorPicker.addEventListener('pointerdown', () => { snapshot(); });
 colorPicker.addEventListener('input', () => {
-  state.groupColors[state.active] = colorPicker.value;
+  cur().groupColors[cur().colorTab] = colorPicker.value;
   save();
   renderAll();
 });
@@ -767,7 +836,7 @@ PALETTE.forEach(hex => {
   s.title = hex;
   s.addEventListener('click', () => {
     snapshot();
-    state.groupColors[state.active] = hex;
+    cur().groupColors[cur().colorTab] = hex;
     save();
     renderAll();
   });
@@ -775,7 +844,7 @@ PALETTE.forEach(hex => {
 });
 document.getElementById('btnClear').addEventListener('click', () => {
   snapshot();
-  state.placements = {};
+  cur().placements = {};
   save();
   renderGrid();
   toast('全ての配置を解除しました');
@@ -838,6 +907,63 @@ fileImportEl.addEventListener('change', (e) => {
     fileImportEl.value = '';
   };
   reader.readAsText(file, 'utf-8');
+});
+
+/* ======== CSV取込（氏名のみ） ======== */
+function decodeCsvBuffer(buf){
+  let text = new TextDecoder('utf-8', { fatal: false }).decode(buf);
+  if (text.indexOf('\uFFFD') !== -1){
+    // UTF-8として文字化けする場合はShift_JIS（Excel等の既定）として読み直す
+    try{ text = new TextDecoder('shift_jis').decode(buf); }catch(e){}
+  }
+  return text;
+}
+function parseNamesCsv(text){
+  const lines = text.split(/\r\n|\r|\n/);
+  const names = [];
+  lines.forEach((line, idx) => {
+    if (!line.trim()) return;
+    let first = line.split(',')[0].trim();
+    first = first.replace(/^"(.*)"$/, '$1').trim();
+    if (idx === 0 && /^(氏名|名前|name)$/i.test(first)) return;   // ヘッダー行はスキップ
+    if (first) names.push(first);
+  });
+  return names;
+}
+const csvImportBtn = document.getElementById('btnCsvImport');
+const fileCsvEl = document.getElementById('fileCsv');
+csvImportBtn.addEventListener('click', () => {
+  fileCsvEl.click();
+});
+fileCsvEl.addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const text = decodeCsvBuffer(reader.result);
+    const names = parseNamesCsv(text);
+    if (!names.length){
+      toast('CSVから氏名を読み取れませんでした');
+      fileCsvEl.value = '';
+      return;
+    }
+    snapshot();
+    const p = cur();
+    const n = Math.min(names.length, PEOPLE);
+    for (let i = 0; i < n; i++){
+      p.people[i].name = names[i];
+    }
+    save();
+    renderPeopleList();
+    renderGrid();
+    updateDuplicateHighlights();
+    renderSummary();
+    let msg = n + '件の氏名を取り込みました';
+    if (names.length > PEOPLE) msg += '（超過分 ' + (names.length - PEOPLE) + '件は無視）';
+    toast(msg);
+    fileCsvEl.value = '';
+  };
+  reader.readAsArrayBuffer(file);
 });
 
 /* ======== サイズ連動（コマの大きさ） ======== */
