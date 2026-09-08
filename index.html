@@ -17,14 +17,9 @@ body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Mei
 #panel.collapsed{display:none;}
 h1{font-size:17px; letter-spacing:.03em; display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid #e6eaef;}
 h1 .d{color:var(--accent);}
-#sideBody{display:flex; gap:12px; align-items:flex-start;}
-#tabCol{flex:none; display:flex; flex-direction:column; gap:6px;}
-#formCol{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px;}
+#sideBody{display:flex; flex-direction:column; gap:8px;}
 .sectionLabel{font-size:10.5px; color:#7a8694; letter-spacing:.08em; font-weight:700;}
-#tabs{display:grid; grid-template-columns:repeat(2,30px); gap:5px;}
-.tab{width:30px; height:28px; border-radius:7px; border:1px solid #c9d1da; background:#f6f8fa; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; padding:0; transition:.12s; color:#333;}
-.tab:hover{border-color:var(--accent);}
-.tab.active{color:#fff; border-color:transparent; font-weight:700; background:var(--accent);}
+#patternSelect{width:100%; border:1px solid #c9d1da; border-radius:8px; padding:8px 10px; font-size:14px; font-weight:700; background:#fff; color:#222; cursor:pointer;}
 #colorRow{display:flex; align-items:center; gap:6px;}
 #colorRow select{border:1px solid #c9d1da; border-radius:6px; padding:4px 4px; font-size:11px; background:#fff; cursor:pointer;}
 #colorRow input[type=color]{width:40px; height:28px; border:1px solid #c9d1da; border-radius:6px; padding:2px; background:#fff; cursor:pointer;}
@@ -154,12 +149,11 @@ body.locked #dirArrow{cursor:default;}
   <aside id="panel" class="collapsed">
     <h1><span class="d">◆</span>三方初期布陣</h1>
     <div id="sideBody">
-      <div id="tabCol">
+      <div>
         <div class="sectionLabel">パターン選択</div>
-        <div id="tabs"></div>
+        <select id="patternSelect"></select>
       </div>
-      <div id="formCol">
-        <div>
+      <div>
           <div class="sectionLabel">集結の色（集結ごとに変更可）</div>
           <div id="colorRow">
             <select id="colorGroupSelect" title="編集する集結"></select>
@@ -208,7 +202,7 @@ body.locked #dirArrow{cursor:default;}
         <div id="help">
           操作手順<br>
           1. 左端の矢印ボタンで操作パネルを開閉<br>
-          2. 左のタブで「パターン1〜10」を切替（それぞれ独立した50人名簿・配置を持てます）<br>
+          2. 「パターン選択」のプルダウンで「パターン1〜10」を切替（それぞれ独立した50人名簿・配置を持てます）<br>
           3. 各行の集結番号（プルダウン）でメンバーの所属集結①〜⑳を選択<br>
           4. 役割（中／旗本）を選び、名前を入力。箱出しの人は「箱1」または「箱2」を選ぶ<br>
           5. 行はドラッグで並び替え可能（左端の「⋮⋮」をつかんで移動。スマホでも同じ操作で並び替えできます）<br>
@@ -222,7 +216,6 @@ body.locked #dirArrow{cursor:default;}
           13. 画面上部の<b>🔒 ロック</b>ボタンで編集を止めて閲覧専用にできます（配置・名前・色などが一切変更できなくなります）。この状態のまま「書き出す」と、閲覧専用のまま人に共有できます<br>
           14. 続きを編集するときは<b>✏️ 編集する</b>ボタンでロックを解除してください
         </div>
-      </div>
     </div>
   </aside>
   <main id="boardWrap">
@@ -437,7 +430,7 @@ function toast(msg){
 const grid = document.getElementById('grid');
 const panelEl = document.getElementById('panel');
 const panelToggleEl = document.getElementById('panelToggle');
-const tabsEl = document.getElementById('tabs');
+const patternSelectEl = document.getElementById('patternSelect');
 const peopleListEl = document.getElementById('peopleList');
 const colorGroupSelectEl = document.getElementById('colorGroupSelect');
 const colorPicker = document.getElementById('colorPicker');
@@ -594,21 +587,25 @@ function renderArrow(){
 }
 
 /* ======== 描画 ======== */
-function renderTabs(){
-  tabsEl.innerHTML = '';
+function buildPatternSelect(){
+  patternSelectEl.innerHTML = '';
   for (let i = 0; i < PATTERNS; i++){
-    const b = document.createElement('button');
-    b.className = 'tab' + (i === state.activePattern ? ' active' : '');
-    b.textContent = String(i + 1);
-    b.title = 'パターン' + (i + 1);
-    b.addEventListener('click', () => {
-      if (i === state.activePattern) return;
-      state.activePattern = i;
-      save();
-      renderAll();
-    });
-    tabsEl.appendChild(b);
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = 'パターン' + (i + 1);
+    patternSelectEl.appendChild(opt);
   }
+}
+buildPatternSelect();
+patternSelectEl.addEventListener('change', () => {
+  const i = +patternSelectEl.value;
+  if (i === state.activePattern) return;
+  state.activePattern = i;
+  save();
+  renderAll();
+});
+function renderTabs(){
+  patternSelectEl.value = state.activePattern;
 }
 function buildColorGroupSelect(){
   colorGroupSelectEl.innerHTML = '';
