@@ -13,7 +13,7 @@ body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Mei
 #panelToggle{flex:none; width:26px; border:none; border-right:1px solid #d5dbe3; background:#eef1f5; color:#5f6b78; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; transition:background .12s;}
 #panelToggle:hover{background:#e2e7ee; color:#2b6cff;}
 /* ---------- 左パネル ---------- */
-#panel{width:440px; min-width:440px; background:#fff; border-right:1px solid #d5dbe3; padding:14px 14px 16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;}
+#panel{width:475px; min-width:475px; background:#fff; border-right:1px solid #d5dbe3; padding:14px 14px 16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;}
 #panel.collapsed{display:none;}
 h1{font-size:17px; letter-spacing:.03em; display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid #e6eaef;}
 h1 .d{color:var(--accent);}
@@ -33,23 +33,23 @@ h1 .d{color:var(--accent);}
 .swatch{width:15px; height:15px; border-radius:50%; cursor:pointer; border:1px solid rgba(0,0,0,.18); transition:.12s;}
 .swatch:hover{transform:scale(1.3);}
 /* ---------- メンバー一覧（50人・ドラッグ並び替え） ---------- */
-#peopleList{display:flex; flex-direction:column; gap:5px; max-height:400px; overflow-y:auto; overflow-x:auto; padding:2px 2px 2px 0;}
-.prow{display:flex; align-items:center; gap:5px; border:1px solid rgba(0,0,0,.14); border-radius:7px; padding:4px 6px; cursor:grab; transition:box-shadow .12s, opacity .12s;}
+#peopleList{display:flex; flex-direction:column; gap:6px; max-height:420px; overflow-y:auto; overflow-x:auto; padding:2px 2px 2px 0;}
+.prow{display:flex; align-items:center; gap:6px; border:1px solid rgba(0,0,0,.14); border-radius:7px; padding:5px 7px; cursor:grab; transition:box-shadow .12s, opacity .12s;}
 .prow.armed{box-shadow:0 0 0 2px var(--accent);}
 .prow.dupError{box-shadow:0 0 0 2px #e11;}
 .prow.dragging{opacity:.35;}
 .prow.dragover{box-shadow:0 0 0 2px #222;}
-.prow .dragHandle{flex:none; font-size:12px; opacity:.6; line-height:1; user-select:none; cursor:grab;}
-.prow select.pGroup{flex:none; width:42px; border:1px solid #c8d0d9; border-radius:6px; padding:3px 1px; font-size:11px; background:#fff; color:#222; cursor:pointer;}
-.prow select.pRole{flex:none; width:42px; border:1px solid #c8d0d9; border-radius:6px; padding:3px 1px; font-size:10.5px; background:#fff; color:#222; cursor:pointer;}
-.prow input.pName{flex:1; min-width:60px; border:1px solid #c8d0d9; border-radius:6px; padding:5px 6px; font-size:12.5px; outline:none; background:#fff; color:#222;}
+.prow .dragHandle{flex:none; font-size:16px; opacity:.65; line-height:1; user-select:none; cursor:grab; padding:6px 4px; margin:-6px -4px; touch-action:none;}
+.prow select.pGroup{flex:none; width:50px; border:1px solid #c8d0d9; border-radius:6px; padding:4px 2px; font-size:13px; background:#fff; color:#222; cursor:pointer;}
+.prow select.pRole{flex:none; width:52px; border:1px solid #c8d0d9; border-radius:6px; padding:4px 2px; font-size:12.5px; background:#fff; color:#222; cursor:pointer;}
+.prow input.pName{flex:1; min-width:64px; border:1px solid #c8d0d9; border-radius:6px; padding:6px 7px; font-size:14px; outline:none; background:#fff; color:#222;}
 .prow input.pName:focus{border-color:var(--accent);}
-.prow .pDel{flex:none; width:18px; height:18px; border:none; background:transparent; color:rgba(0,0,0,.4); font-size:12px; font-weight:700; line-height:1; cursor:pointer; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:.12s;}
+.prow .pDel{flex:none; width:22px; height:22px; border:none; background:transparent; color:rgba(0,0,0,.4); font-size:14px; font-weight:700; line-height:1; cursor:pointer; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:.12s;}
 .prow .pDel:hover{color:#fff; background:#e11;}
-.prow .pCoin{flex:none; width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8.5px; font-weight:700; letter-spacing:-.03em; white-space:nowrap; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,.3);}
-.prow .pCoin.single{font-size:13px;}
+.prow .pCoin{flex:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:700; letter-spacing:-.03em; white-space:nowrap; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,.3);}
+.prow .pCoin.single{font-size:14px;}
 .prow .pCoin.box1{border:2px solid #e11; box-shadow:0 0 0 1px #fff, 0 0 0 3px #e11;}
-.prow select.pBox{flex:none; width:38px; border:1px solid #c8d0d9; border-radius:6px; padding:3px 1px; font-size:10.5px; background:#fff; color:#222; cursor:pointer;}
+.prow select.pBox{flex:none; width:48px; border:1px solid #c8d0d9; border-radius:6px; padding:4px 2px; font-size:12.5px; background:#fff; color:#222; cursor:pointer;}
 .note{font-size:10px; color:#a33; background:#fdf0f0; border:1px solid #f0c9c9; border-radius:6px; padding:4px 8px;}
 #actions{display:flex; gap:8px;}
 button.btn{flex:1; border:1px solid #c8d0d9; background:#f6f8fa; border-radius:8px; padding:6px 0; cursor:pointer; font-size:12.5px;}
@@ -211,7 +211,7 @@ body.locked #dirArrow{cursor:default;}
           2. 左のタブで「パターン1〜10」を切替（それぞれ独立した50人名簿・配置を持てます）<br>
           3. 各行の集結番号（プルダウン）でメンバーの所属集結①〜⑳を選択<br>
           4. 役割（中／旗本）を選び、名前を入力。箱出しの人は「箱1」または「箱2」を選ぶ<br>
-          5. 行はドラッグで並び替え可能（左端の「⋮⋮」をつかんで移動）<br>
+          5. 行はドラッグで並び替え可能（左端の「⋮⋮」をつかんで移動。スマホでも同じ操作で並び替えできます）<br>
           6. 「集結の色」欄のプルダウンで編集したい集結①〜⑳を選び、色を変更できます<br>
           7. 行をクリックして「選択中」にし、ひし形の<b>白マス</b>をクリックで配置<br>
           8. 配置済みマスを再クリックで解除、選択中の人が他マスに居れば移動<br>
@@ -782,7 +782,7 @@ function renderPeopleList(){
       toast((person.name.trim() || '未入力の人') + ' を選択中 → 空きマス(白)をクリックして配置');
     });
 
-    attachDragHandlers(row, person);
+    attachDragHandlers(row, person, handle);
 
     peopleListEl.appendChild(row);
     applyRowStyle(row, person);
@@ -792,7 +792,21 @@ function renderPeopleList(){
   updateDuplicateHighlights();
 }
 let dragSrcId = null;
-function attachDragHandlers(row, person){
+function reorderPeople(fromId, toId){
+  if (!fromId || fromId === toId) return;
+  snapshot();
+  const people = cur().people;
+  const fromIdx = people.findIndex(p => p.id === fromId);
+  const toIdx = people.findIndex(p => p.id === toId);
+  if (fromIdx < 0 || toIdx < 0) return;
+  const [moved] = people.splice(fromIdx, 1);
+  people.splice(toIdx, 0, moved);
+  save();
+  renderPeopleList();
+  toast('並び順を変更しました');
+}
+function attachDragHandlers(row, person, handle){
+  /* ---- デスクトップ：HTML5ネイティブD&D（行全体をつかんで移動） ---- */
   row.addEventListener('dragstart', e => {
     if (isLocked()){ e.preventDefault(); return; }
     dragSrcId = person.id;
@@ -815,18 +829,50 @@ function attachDragHandlers(row, person){
     if (isLocked()) return;
     e.preventDefault();
     row.classList.remove('dragover');
-    if (!dragSrcId || dragSrcId === person.id) return;
-    snapshot();
-    const people = cur().people;
-    const fromIdx = people.findIndex(p => p.id === dragSrcId);
-    const toIdx = people.findIndex(p => p.id === person.id);
-    if (fromIdx < 0 || toIdx < 0) return;
-    const [moved] = people.splice(fromIdx, 1);
-    people.splice(toIdx, 0, moved);
-    save();
-    renderPeopleList();
-    toast('並び順を変更しました');
+    reorderPeople(dragSrcId, person.id);
+    dragSrcId = null;
   });
+
+  /* ---- スマホ：HTML5 D&Dはタッチでは動かないため、指の位置を自前で追跡して並び替える ---- */
+  let touchState = null;
+  handle.addEventListener('touchstart', e => {
+    if (isLocked() || !e.touches[0]) return;
+    touchState = { startY: e.touches[0].clientY };
+    row.classList.add('dragging');
+    row.style.position = 'relative';
+    row.style.zIndex = '80';
+  }, { passive: true });
+  handle.addEventListener('touchmove', e => {
+    if (!touchState) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const dy = touch.clientY - touchState.startY;
+    row.style.transform = 'translateY(' + dy + 'px)';
+    row.style.pointerEvents = 'none';
+    const under = document.elementFromPoint(touch.clientX, touch.clientY);
+    row.style.pointerEvents = '';
+    const targetRow = under ? under.closest('.prow') : null;
+    document.querySelectorAll('.prow.dragover').forEach(r => { if (r !== row) r.classList.remove('dragover'); });
+    if (targetRow && targetRow !== row) targetRow.classList.add('dragover');
+    const listRect = peopleListEl.getBoundingClientRect();
+    const edge = 34;
+    if (touch.clientY < listRect.top + edge) peopleListEl.scrollTop -= 14;
+    else if (touch.clientY > listRect.bottom - edge) peopleListEl.scrollTop += 14;
+  }, { passive: false });
+  function endTouchDrag(){
+    if (!touchState) return;
+    touchState = null;
+    row.classList.remove('dragging');
+    row.style.transform = '';
+    row.style.position = '';
+    row.style.zIndex = '';
+    const targetRow = peopleListEl.querySelector('.prow.dragover');
+    document.querySelectorAll('.prow.dragover').forEach(r => r.classList.remove('dragover'));
+    if (isLocked() || !targetRow || targetRow === row) return;
+    reorderPeople(person.id, targetRow.dataset.id);
+  }
+  handle.addEventListener('touchend', endTouchDrag);
+  handle.addEventListener('touchcancel', endTouchDrag);
 }
 function updateArmedUI(){
   const p = cur();
